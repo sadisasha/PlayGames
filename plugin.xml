@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin
+    xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    id="com.anyks.playgames"
+    version="3.0.0">
+
+    <name>Android Play Games Services</name>
+    <author>Aleksandr Sadikov</author>
+
+    <engines>
+      <engine name="cordova" version=">=3.0.0" />
+    </engines>
+
+    <platform name="android">
+        <js-module src="www/playgames.js" name="PlayGamesPlugin">
+            <clobbers target="playgames" />
+        </js-module>
+
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="PlayGamesPlugin">
+                <param name="android-package" value="com.anyks.playgames.PlayGamesPlugin"/>
+            </feature>
+        </config-file>
+
+		<config-file target="AndroidManifest.xml" parent="/manifest">
+            <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <meta-data android:name="com.google.android.gms.games.APP_ID" android:value="@string/app_id" />
+            <meta-data android:name="com.google.android.gms.version"
+                android:value="@integer/google_play_services_version" />
+        </config-file>
+
+        <source-file src="libs/android-support-v4.jar" target-dir="libs" />
+        <source-file src="libs/google-play-services.jar" target-dir="libs" />
+        <source-file src="libs/google-play-services.jar.properties" target-dir="libs" />
+
+        <source-file src="src/android/com/anyks/playgames/PlayGamesPlugin.java" target-dir="src/com/anyks/playgames" />
+        
+		<source-file src="src/android/com/anyks/playgames/playgamesutils/ActionType.java" target-dir="src/com/anyks/playgames/playgamesutils" />
+		<source-file src="src/android/com/anyks/playgames/playgamesutils/PlayGamesServices.java" target-dir="src/com/anyks/playgames/playgamesutils" />
+		<source-file src="src/android/com/anyks/playgames/playgamesutils/PlayGamesServicesInfo.java" target-dir="src/com/anyks/playgames/playgamesutils" />
+		<source-file src="src/android/com/anyks/playgames/playgamesutils/PlayGamesServicesInterface.java" target-dir="src/com/anyks/playgames/playgamesutils" />
+		
+		<source-file src="res/values/gamehelper_strings.xml" target-dir="res/values" />
+        <source-file src="res/values/ids.xml" target-dir="res/values" />
+        <source-file src="res/values/version.xml" target-dir="res/values" />
+
+    </platform>
+</plugin>
