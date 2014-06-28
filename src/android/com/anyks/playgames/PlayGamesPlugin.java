@@ -6,64 +6,57 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 
 import com.anyks.playgames.playgamesutils.ActionType;
 import com.anyks.playgames.playgamesutils.PlayGamesServices;
 import com.anyks.playgames.playgamesutils.PlayGamesServicesInterface;
-import com.google.android.gms.common.ConnectionResult;
 
-public class PlayGamesPlugin extends CordovaPlugin implements PlayGamesServicesInterface {
+public class PlayGamesPlugin extends CordovaPlugin implements
+		PlayGamesServicesInterface {
 
 	PlayGamesServices mPlay;
 	CallbackContext mCallbackContext;
-	
+
+	@SuppressWarnings("unused")
+	private final String TAG_LOG = "PlayGamesPlugin";
+
+	Boolean isValidAction = false;
+
 	@Override
-	public boolean execute(String action, JSONArray data, final CallbackContext callbackContext) throws JSONException {
+	public boolean execute(String action, JSONArray data,
+			final CallbackContext callbackContext) throws JSONException {
 
 		mCallbackContext = callbackContext;
-		Boolean isValidAction = true;
-		
-		if (mPlay == null) {
-			mPlay = new PlayGamesServices();
-			mPlay.setOnPlayGamesServicesCallback(this);
-		}
-		
+
 		try {
 			if ("connect".equals(action)) {
-				if (!mPlay.isConnect()) {
-	                mPlay.connect();
-	                isValidAction = true;
-	            }
-			} else if ("disconnect".equals(action)) {
-	            if (mPlay.isConnect()) {
-	                mPlay.disconnect();
-	                isValidAction = true;
-	            }
-			} else if ("reconnect".equals(action)) {
-				mPlay.reconnect();
+				if (mPlay == null) {
+					mPlay = new PlayGamesServices(getActivity());
+					mPlay.setOnPlayGamesServicesCallback(this);
+				}
 				isValidAction = true;
-			} else if ("statusConnection".equals(action)) {
+			} else if ("isconnected".equals(action)) {
 				String result = "false";
 				if (mPlay.isConnect()) {
 					result = "true";
-					isValidAction = true;
 				}
+				isValidAction = true;
 				mCallbackContext.success(result);
-			} else if ("accountName".equals(action)) {
+			} else if ("getAccountName".equals(action)) {
 				if (!mPlay.getAccountName().equals("")) {
 					mCallbackContext.success(mPlay.getAccountName());
 					isValidAction = true;
 				} else {
-					mCallbackContext.error("");
 					isValidAction = false;
 				}
 			} else if ("showAchievements".equals(action)) {
 				mPlay.showAchievements();
 				isValidAction = true;
 			} else if ("setIncrement".equals(action)) {
-				mPlay.setIncrement(data.getBoolean(0), data.getString(1), data.getInt(2));
+				mPlay.setIncrement(data.getBoolean(0), data.getString(1),
+						data.getInt(2));
 				isValidAction = true;
 			} else if ("loadAchievements".equals(action)) {
 				mPlay.loadAchievements(data.getBoolean(0));
@@ -72,39 +65,43 @@ public class PlayGamesPlugin extends CordovaPlugin implements PlayGamesServicesI
 				mPlay.setReveal(data.getBoolean(0), data.getString(1));
 				isValidAction = true;
 			} else if ("setSetSteps".equals(action)) {
-				mPlay.setSetSteps(data.getBoolean(0), data.getString(1), data.getInt(2));
+				mPlay.setSetSteps(data.getBoolean(0), data.getString(1),
+						data.getInt(2));
 				isValidAction = true;
 			} else if ("setUnlockAchievement".equals(action)) {
-				mPlay.setUnlockAchievement(data.getBoolean(0), data.getString(1));
+				mPlay.setUnlockAchievement(data.getBoolean(0),
+						data.getString(1));
 				isValidAction = true;
 			} else if ("showLeaderboards".equals(action)) {
 				mPlay.showLeaderboards();
 				isValidAction = true;
 			} else if ("loadTopScores".equals(action)) {
-				mPlay.loadTopScores(data.getString(0), data.getInt(1), data.getInt(2), data.getInt(3), data.getBoolean(4));
+				mPlay.loadTopScores(data.getString(0), data.getInt(1),
+						data.getInt(2), data.getInt(3), data.getBoolean(4));
 				isValidAction = true;
 			} else if ("setSubmitScore".equals(action)) {
-				mPlay.setSubmitScore(data.getBoolean(0), data.getString(1), data.getLong(2));
+				mPlay.setSubmitScore(data.getBoolean(0), data.getString(1),
+						data.getLong(2));
 				isValidAction = true;
 			}
 		} catch (IllegalStateException e) {
 			callbackContext.error(e.getMessage());
 			isValidAction = false;
-		} 
-		
+		}
+
 		return isValidAction;
 	}
 
 	@Override
-	public void onConnected(Bundle connectionHint) {
+	public void onConnected() {
 		// TODO Auto-generated method stub
 		mCallbackContext.success();
 	}
 
 	@Override
-	public void onConnectionFailed(ConnectionResult result) {
+	public void onConnectionFailed() {
 		// TODO Auto-generated method stub
-		mCallbackContext.success();
+		mCallbackContext.error(PlayGamesError.UNAVAILABLE);
 	}
 
 	@Override
@@ -116,18 +113,28 @@ public class PlayGamesPlugin extends CordovaPlugin implements PlayGamesServicesI
 	@Override
 	public void onActionResult(ActionType type, boolean isResult) {
 		// TODO Auto-generated method stub
-		
+		mCallbackContext.success(Boolean.toString(isResult));
+
 	}
 
 	@Override
 	public void onLoadAchievements(ActionType type, JSONObject jsonObject) {
 		// TODO Auto-generated method stub
-		
+		mCallbackContext.success(jsonObject);
 	}
 
 	@Override
 	public void onLoadTopScores(ActionType type, JSONObject jsonObject) {
 		// TODO Auto-generated method stub
-		
+		mCallbackContext.success(jsonObject);
+
+	}
+
+	private Context getActivity() {
+		return cordova.getActivity();
+	}
+
+	final class PlayGamesError {
+		public static final String UNAVAILABLE = "UNAVAILABLE";
 	}
 }
