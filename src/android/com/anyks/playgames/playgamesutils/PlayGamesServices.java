@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 
+import com.anyks.playgames.playgamesutils.PlayGamesHelper.ActionType;
+import com.anyks.playgames.playgamesutils.PlayGamesHelper.OnPlayGamesListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -30,26 +32,27 @@ public class PlayGamesServices implements GoogleApiClient.ConnectionCallbacks,
 	private static final String TAG = "PlayGamesServices";
 	private static GoogleApiClient mGoogleApiClient;
 
-	PlayGamesServicesInterface mCallback;
+	OnPlayGamesListener mCallback;
 
 	Activity mActivity;
-
+	
 	public PlayGamesServices(Context cxt) {
 		// TODO Auto-generated constructor stub
-		mActivity = (Activity) cxt;
-		if (mGoogleApiClient == null) {
-			mGoogleApiClient = new GoogleApiClient.Builder(mActivity)
-					.setGravityForPopups(Gravity.TOP).addApi(Games.API)
-					.addScope(Games.SCOPE_GAMES).addConnectionCallbacks(this)
-					.addOnConnectionFailedListener(this).build();
-		}
-		mGoogleApiClient.connect();
+		setup(cxt);
+		PlayGamesHelper.REQUEST_COUNT = 2;
+	}	
+
+	public PlayGamesServices(Context cxt, int requestCount) {
+		// TODO Auto-generated constructor stub
+		setup(cxt);
+		PlayGamesHelper.REQUEST_COUNT = requestCount;
+		
 	}
 
 	public void setOnPlayGamesServicesCallback(
-			PlayGamesServicesInterface listener) {
+			OnPlayGamesListener listener) {
 		try {
-			mCallback = (PlayGamesServicesInterface) listener;
+			mCallback = (OnPlayGamesListener) listener;
 		} catch (ClassCastException e) {
 			throw new ClassCastException(
 					"Calling activity must implement PlayGamesServicesCallback interface");
@@ -85,7 +88,7 @@ public class PlayGamesServices implements GoogleApiClient.ConnectionCallbacks,
 		}
 		try {
 			result.startResolutionForResult(mActivity,
-					RequestResolution.REQUEST_CODE_RESOLUTION);
+					PlayGamesHelper.REQUEST_CODE_RESOLUTION);
 		} catch (SendIntentException e) {
 			Log.e(TAG, "Exception while starting resolution activity", e);
 			if (mCallback != null) {
@@ -330,5 +333,16 @@ public class PlayGamesServices implements GoogleApiClient.ConnectionCallbacks,
 		else if (status.isCanceled())
 			result = false;
 		return result;
+	}
+	
+	private void setup(Context cxt) {
+		mActivity = (Activity) cxt;
+		if (mGoogleApiClient == null) {
+			mGoogleApiClient = new GoogleApiClient.Builder(mActivity)
+					.setGravityForPopups(Gravity.TOP).addApi(Games.API)
+					.addScope(Games.SCOPE_GAMES).addConnectionCallbacks(this)
+					.addOnConnectionFailedListener(this).build();
+		}
+		mGoogleApiClient.connect();
 	}
 }

@@ -6,8 +6,8 @@ PlayGames.prototype.connect = function (success, failed) {
 	return cordova.exec(success, failed, "PlayGamesPlugin", "connect", [null]);
 };
 
-PlayGames.prototype.isconnected = function (success, failed) {
-	return cordova.exec(success, failed, "PlayGamesPlugin", "isconnected", [null]);
+PlayGames.prototype.isConnected = function (success, failed) {
+	return cordova.exec(success, failed, "PlayGamesPlugin", "isConnected", [null]);
 };
 
 PlayGames.prototype.getAccountName = function (success, failed) {

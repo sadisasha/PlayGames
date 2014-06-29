@@ -9,12 +9,11 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.content.Intent;
 
-import com.anyks.playgames.playgamesutils.ActionType;
+import com.anyks.playgames.playgamesutils.PlayGamesHelper.ActionType;
+import com.anyks.playgames.playgamesutils.PlayGamesHelper.OnPlayGamesListener;
 import com.anyks.playgames.playgamesutils.PlayGamesServices;
-import com.anyks.playgames.playgamesutils.PlayGamesServicesInterface;
 
-public class PlayGamesPlugin extends CordovaPlugin implements
-		PlayGamesServicesInterface {
+public class PlayGamesPlugin extends CordovaPlugin implements OnPlayGamesListener {
 
 	PlayGamesServices mPlay;
 	CallbackContext mCallbackContext;

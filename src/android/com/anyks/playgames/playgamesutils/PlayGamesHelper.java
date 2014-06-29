@@ -1,14 +1,42 @@
 package com.anyks.playgames.playgamesutils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class PlayGamesServicesInfo {
+import org.json.JSONObject;
 
+public class PlayGamesHelper {
+
+    public static final int REQUEST_CODE_RESOLUTION = 1;
+    
+    public static int REQUEST_COUNT;
+	
+    public enum ActionType {
+        SUBMIT_SCORE,
+        UNLOCK,
+        INCREMENT,
+        REVEAL,
+        SET_STEPS,
+        LOAD,
+        TOP_SCORES
+    }
+    
+    public interface OnPlayGamesListener {
+
+    	public void onConnected();
+    	public void onConnectionFailed();
+        public void onShowServicesActivity(Intent intent);
+        public void onActionResult(ActionType type, boolean isResult);
+        public void onLoadAchievements(ActionType type, JSONObject jsonObject);
+        public void onLoadTopScores(ActionType type, JSONObject jsonObject);
+
+    }
+    
     public static String getSHA1CertFingerprint(Context ctx) {
         try {
             Signature[] signatures = ctx.getPackageManager().getPackageInfo(
@@ -43,5 +71,5 @@ public class PlayGamesServicesInfo {
         int lo = unsigned_byte % 16;
         sb.append("0123456789ABCDEF".substring(hi, hi + 1));
         sb.append("0123456789ABCDEF".substring(lo, lo + 1));
-    }
+    }    
 }
