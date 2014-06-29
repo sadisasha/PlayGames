@@ -36,10 +36,10 @@ public class PlayGamesPlugin extends CordovaPlugin implements OnPlayGamesListene
 		try {
 			if ("connect".equals(action)) {
 				if (mPlay == null) {
-					// По умалчиванию 2 попытки
-					// Изменить число попыток можно
-					// Нужно аменить mPlay = new PlayGamesServices(getActivity());
-					// На mPlay = new PlayGamesServices(getActivity(), число попыток);
+					// Џо умалчиванию 2 попытки
+					// ‡аменить число попыток можно
+					// Ќужно заменить mPlay = new PlayGamesServices(getActivity());
+					// на mPlay = new PlayGamesServices(getActivity(), число попыток);
 					mPlay = new PlayGamesServices(getActivity());
 					mPlay.setOnPlayGamesServicesCallback(this);
 				}
