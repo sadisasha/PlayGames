@@ -35,23 +35,22 @@ public class PlayGamesServices implements GoogleApiClient.ConnectionCallbacks,
 	OnPlayGamesListener mCallback;
 
 	Activity mActivity;
-
-	private int connectionCount = 0;
-
+	
 	public PlayGamesServices(Context cxt) {
 		// TODO Auto-generated constructor stub
 		setup(cxt);
 		PlayGamesHelper.REQUEST_COUNT = 2;
-	}
+	}	
 
 	public PlayGamesServices(Context cxt, int requestCount) {
 		// TODO Auto-generated constructor stub
 		setup(cxt);
 		PlayGamesHelper.REQUEST_COUNT = requestCount;
-
+		
 	}
 
-	public void setOnPlayGamesServicesCallback(OnPlayGamesListener listener) {
+	public void setOnPlayGamesServicesCallback(
+			OnPlayGamesListener listener) {
 		try {
 			mCallback = (OnPlayGamesListener) listener;
 		} catch (ClassCastException e) {
@@ -88,14 +87,8 @@ public class PlayGamesServices implements GoogleApiClient.ConnectionCallbacks,
 			return;
 		}
 		try {
-			if (connectionCount <= (PlayGamesHelper.REQUEST_COUNT - 1)) {
-				result.startResolutionForResult(mActivity, PlayGamesHelper.REQUEST_CODE_RESOLUTION);
-			} else {
-				if (mCallback != null) {
-					mCallback.onConnectionFailed();
-				}
-			}
-			connectionCount++;
+			result.startResolutionForResult(mActivity,
+					PlayGamesHelper.REQUEST_CODE_RESOLUTION);
 		} catch (SendIntentException e) {
 			Log.e(TAG, "Exception while starting resolution activity", e);
 			if (mCallback != null) {
@@ -341,7 +334,7 @@ public class PlayGamesServices implements GoogleApiClient.ConnectionCallbacks,
 			result = false;
 		return result;
 	}
-
+	
 	private void setup(Context cxt) {
 		mActivity = (Activity) cxt;
 		if (mGoogleApiClient == null) {

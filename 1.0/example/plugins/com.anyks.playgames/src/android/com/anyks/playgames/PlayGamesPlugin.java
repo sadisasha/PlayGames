@@ -8,9 +8,7 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.content.Intent;
-//import android.util.Log;
 
-//import com.anyks.playgames.playgamesutils.PlayGamesHelper;
 import com.anyks.playgames.playgamesutils.PlayGamesHelper.ActionType;
 import com.anyks.playgames.playgamesutils.PlayGamesHelper.OnPlayGamesListener;
 import com.anyks.playgames.playgamesutils.PlayGamesServices;
@@ -29,22 +27,16 @@ public class PlayGamesPlugin extends CordovaPlugin implements OnPlayGamesListene
 	public boolean execute(String action, JSONArray data,
 			final CallbackContext callbackContext) throws JSONException {
 
-		//Log.e(TAG_LOG, PlayGamesHelper.getSHA1CertFingerprint(getActivity()));
-		
 		mCallbackContext = callbackContext;
 
 		try {
 			if ("connect".equals(action)) {
 				if (mPlay == null) {
-					// По умалчиванию 2 попытки
-					// Изменить число попыток можно
-					// Нужно аменить mPlay = new PlayGamesServices(getActivity());
-					// На mPlay = new PlayGamesServices(getActivity(), число попыток);
 					mPlay = new PlayGamesServices(getActivity());
 					mPlay.setOnPlayGamesServicesCallback(this);
 				}
 				isValidAction = true;
-			} else if ("isConnected".equals(action)) {
+			} else if ("isconnected".equals(action)) {
 				String result = "false";
 				if (mPlay.isConnect()) {
 					result = "true";

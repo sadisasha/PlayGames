@@ -89,6 +89,7 @@ public class PlayGamesServices implements GoogleApiClient.ConnectionCallbacks,
 		}
 		try {
 			if (connectionCount <= (PlayGamesHelper.REQUEST_COUNT - 1)) {
+				Log.e(TAG, Integer.toString(connectionCount));
 				result.startResolutionForResult(mActivity, PlayGamesHelper.REQUEST_CODE_RESOLUTION);
 			} else {
 				if (mCallback != null) {
