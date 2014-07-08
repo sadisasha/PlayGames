@@ -31,7 +31,7 @@ public class PlayGamesPlugin extends CordovaPlugin implements OnPlayGamesListene
 			final CallbackContext callbackContext) throws JSONException {
 
 		//Log.e(TAG_LOG, PlayGamesHelper.getSHA1CertFingerprint(getActivity()));
-		
+
 		mCallbackContext = callbackContext;
 
 		try {
@@ -40,7 +40,7 @@ public class PlayGamesPlugin extends CordovaPlugin implements OnPlayGamesListene
 					// Подключение к сервису
 					// При неудачном подключении, будет еще одна попытка
 					// Всего 2 попытки
-					// Изменить число попыток можно заменив 
+					// Изменить число попыток можно заменив
 					//mPlay = new PlayGamesServices(getActivity());
 					// На mPlay = new PlayGamesServices(getActivity(), число попыток);
 					mPlay = new PlayGamesServices(getActivity());
@@ -119,7 +119,7 @@ public class PlayGamesPlugin extends CordovaPlugin implements OnPlayGamesListene
 	@Override
 	public void onConnected() {
 		// TODO Auto-generated method stub
-		mCallbackContext.success();
+		mCallbackContext.success(PlayGamesError.AVAILABLE);
 	}
 
 	@Override
@@ -159,6 +159,7 @@ public class PlayGamesPlugin extends CordovaPlugin implements OnPlayGamesListene
 	}
 
 	final class PlayGamesError {
+		public static final String AVAILABLE = "AVAILABLE";
 		public static final String UNAVAILABLE = "UNAVAILABLE";
 	}
 }
