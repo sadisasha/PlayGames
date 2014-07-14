@@ -119,7 +119,7 @@ public class PlayGamesPlugin extends CordovaPlugin implements OnPlayGamesListene
 	@Override
 	public void onConnected() {
 		// TODO Auto-generated method stub
-		mCallbackContext.success(PlayGamesError.AVAILABLE);
+		mCallbackContext.success();
 	}
 
 	@Override
@@ -159,7 +159,6 @@ public class PlayGamesPlugin extends CordovaPlugin implements OnPlayGamesListene
 	}
 
 	final class PlayGamesError {
-		public static final String AVAILABLE = "AVAILABLE";
 		public static final String UNAVAILABLE = "UNAVAILABLE";
 	}
 }
